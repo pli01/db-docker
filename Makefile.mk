@@ -75,12 +75,11 @@ endif
 # pgadmin
 #
 
-PGADMIN_DATADIR ?= ./data-pgadmin
+PGADMIN_DATADIR ?= data-pgadmin
+#PGADMIN_DATADIR ?= ./data-pgadmin
 PGADMIN_PORT ?= 80
-PGADMIN_PASSWORD ?= changeme
-PGADMIN_USER_DSS ?= dssuser
-PGADMIN_PASSWORD_DSS ?= dsschangeme
-PGADMIN_DATABASE_DSS ?= dss
+PGADMIN_DEFAULT_EMAIL ?= noreply@example.org
+PGADMIN_DEFAULT_PASSWORD ?= changeme
 
 DC_DSS_DEFAULT_CONF_PGADMIN ?= db/docker-compose-db-postgres.yml
 DC_DSS_CUSTOM_CONF_PGADMIN ?= docker-compose-custom-db-postgres.yml
