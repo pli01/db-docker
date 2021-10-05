@@ -1,0 +1,46 @@
+version: '3.5'
+
+networks:
+  db-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1450
+
+services:
+  postgres:
+    image: postgres:${POSTGRES_VERSION:-12.6}
+    container_name: ${COMPOSE_PROJECT_NAME}_db_postgres
+    networks:
+      - db-network
+    volumes:
+      - ${POSTGRES_DATADIR:-./data-db-postgres}:/data/postgres
+      - ./postgres-init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+    environment:
+      - http_proxy=${http_proxy}
+      - https_proxy=${https_proxy}
+      - no_proxy=${no_proxy}
+      - PGDATA=/data/postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-changeme}
+      - POSTGRES_DATABASE_DSS=${POSTGRES_DATABASE_DSS:-db}
+      - POSTGRES_USER_DSS=${POSTGRES_USER_DSS:-dbuser}
+      - POSTGRES_PASSWORD_DSS=${POSTGRES_PASSWORD_DSS:-dbchangeme}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-noreply@example.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - ${PGADMIN_DATADIR}:/var/lib/pgadmin
+
+    ports:
+      - "${PGADMIN_PORT:-80}:80"
+    networks:
+      - db-network
+    restart: unless-stopped
+
