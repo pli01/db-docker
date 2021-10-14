@@ -3,7 +3,7 @@
 Use for testing purpose, and quick deploy a small and simple db docker stack
 
 * postgres: postgresql + pgadmin
-* mysql: mysql + phpmyadmin
+* [TODO] mysql: mysql + phpmyadmin
 
 ## Launch
 
